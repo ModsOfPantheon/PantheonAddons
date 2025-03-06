@@ -31,7 +31,8 @@ public class CustomUI : ICustomUI
         gameObject.layer = Layers.UI;
         
         var rectTransform = gameObject.AddComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(-(initialSize.x / 2), initialSize.y / 2);
         rectTransform.sizeDelta = initialSize;
         
         var canvasRenderer = gameObject.AddComponent<CanvasRenderer>();
@@ -45,9 +46,6 @@ public class CustomUI : ICustomUI
 
         uiDraggable._windowPanel = uiWindowPanel;
         
-        var layout = gameObject.AddComponent<VerticalLayoutGroup>();
-        layout.padding = new RectOffset(14, 14, 14, 14);
-
         var image = gameObject.AddComponent<Image>();
         image.type = Image.Type.Sliced;
         image.sprite = imageToCopy.sprite;
