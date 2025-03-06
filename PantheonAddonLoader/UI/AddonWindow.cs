@@ -2,6 +2,7 @@ using Il2Cpp;
 using Il2CppTMPro;
 using PantheonAddonFramework.UI;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace PantheonAddonLoader.UI;
 
@@ -35,7 +36,7 @@ public class AddonWindow : IAddonWindow
     {
         _rectTransform.transform.position = new Vector2(newX, newY);
     }
-
+    
     public IAddonTextComponent AddTextComponent(string initialText)
     {
         var go = new GameObject("Test");
@@ -50,5 +51,15 @@ public class AddonWindow : IAddonWindow
         rectTransform.anchoredPosition = new Vector2(0, 0);
         
         return new AddonTextComponent(textComponent);
+    }
+
+    public void Enable(bool enabled)
+    {
+        _window.gameObject.SetActive(enabled);
+    }
+
+    public void Destroy()
+    {
+        Object.Destroy(_window);
     }
 }

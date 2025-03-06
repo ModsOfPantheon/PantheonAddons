@@ -11,4 +11,6 @@ public interface IAddonWindow
     void SetPosition(float newX, float newY);
 
     IAddonTextComponent AddTextComponent(string initialText);
+    void Enable(bool enabled);
+    void Destroy();
 }
