@@ -125,12 +125,20 @@ public class UISettingsHooks
                 text = option
             });
         }
+
+        var category = MelonPreferences.CreateCategory(addon.Name);
+        var entry = category.CreateEntry(configuration.Name, configuration.InitialIndex);
+        
+        dropDown.value = entry.Value;
         
         dropDown.onValueChanged.RemoveAllListeners();
         dropDown.onValueChanged.AddCall(new InvokableCall(new Action(() =>
         {
             configuration.OnSelectionChanged(dropDown.value);
+            entry.Value = dropDown.value;
         })));
+        
+        dropDown.onValueChanged.Invoke(dropDown.value);
     }
 
     private static void SetupCustomToggle(Addon addon, BoolConfigurationValue configuration, Transform parent, Transform buttonToCopy)
@@ -147,14 +155,19 @@ public class UISettingsHooks
         Object.Destroy(copy.GetComponent<UISettings_ConfigBool>());
         
         var toggleComp = copy.GetComponent<Toggle>();
-        toggleComp.isOn = configuration.InitialValue;
+        
+        var category = MelonPreferences.CreateCategory(addon.Name);
+        var entry = category.CreateEntry(configuration.Name, configuration.InitialValue);
+        
+        toggleComp.isOn = entry.Value;
         toggleComp.onValueChanged.RemoveAllListeners();
         toggleComp.onValueChanged.AddCall(new InvokableCall(new Action(() =>
         {
             configuration.OnValueChanged(toggleComp.isOn);
+            entry.Value = toggleComp.isOn;
         })));
-        
-        
+
+        toggleComp.onValueChanged.Invoke(toggleComp.isOn);
     }
 
     private static void SetupCustomSlider(Addon addon, FloatConfigurationValue configuration, Transform parent, Transform sliderToCopy)
@@ -171,8 +184,11 @@ public class UISettingsHooks
         var sliderComp = sliderObj.GetComponent<Slider>();
         sliderComp.minValue = configuration.MinValue;
         sliderComp.maxValue = configuration.MaxValue;
-        sliderComp.value = configuration.InitialValue;
         sliderComp.wholeNumbers = false;
+        
+        var category = MelonPreferences.CreateCategory(addon.Name);
+        var entry = category.CreateEntry(configuration.Name, configuration.InitialValue);
+        sliderComp.value = entry.Value;
         
         sliderComp.onValueChanged.RemoveAllListeners();
         sliderComp.onValueChanged.AddCall(new InvokableCall(new Action(() =>
@@ -180,9 +196,13 @@ public class UISettingsHooks
             sliderComp.value = GetNearestMultiple(sliderComp.value, configuration.StepAmount);
             textComp.text = $"{configuration.Name} - {sliderComp.value:F1}";
             
-            configuration.OnValueChanged(sliderComp.value);
+            configuration.OnValueChanged(MathF.Round(sliderComp.value, 1));
+            
+            entry.Value = MathF.Round(sliderComp.value, 1);
         })));
-
+        
+        sliderComp.onValueChanged.Invoke(MathF.Round(sliderComp.value, 1));
+        
         var handleObject = sliderObj.GetChild(2).GetChild(0);
         var tooltip = handleObject.GetComponent<UITooltip>();
         tooltip.TooltipHeadingText = configuration.Name;
@@ -190,36 +210,43 @@ public class UISettingsHooks
     }
     
     // TODO: Clean up duplicate code between this method and one above
-    private static void SetupCustomSlider(Addon addon, IntConfigurationValue configurationValue, Transform parent, Transform sliderToCopy)
+    private static void SetupCustomSlider(Addon addon, IntConfigurationValue configuration, Transform parent, Transform sliderToCopy)
     {
         var copy = GameObject.Instantiate(sliderToCopy, sliderToCopy.position, Quaternion.identity, parent);
-        copy.name = $"Slider_{addon.Name}_{configurationValue.Name}";
+        copy.name = $"Slider_{addon.Name}_{configuration.Name}";
         
         Object.Destroy(copy.GetComponent<UISettings_ConfigSlider>());
         
         var textComp = copy.GetChild(0).GetComponent<TextMeshProUGUI>();
-        textComp.text = $"{configurationValue.Name} - {configurationValue.InitialValue}";
+        textComp.text = $"{configuration.Name} - {configuration.InitialValue}";
         
         var sliderObj = copy.GetChild(1);
         var sliderComp = sliderObj.GetComponent<Slider>();
-        sliderComp.minValue = configurationValue.MinValue;
-        sliderComp.maxValue = configurationValue.MaxValue;
-        sliderComp.value = configurationValue.InitialValue;
+        sliderComp.minValue = configuration.MinValue;
+        sliderComp.maxValue = configuration.MaxValue;
         sliderComp.wholeNumbers = true;
+        
+        var category = MelonPreferences.CreateCategory(addon.Name);
+        var configEntry = category.CreateEntry(configuration.Name, configuration.InitialValue);
+        
+        sliderComp.value = configEntry.Value;
         
         sliderComp.onValueChanged.RemoveAllListeners();
         sliderComp.onValueChanged.AddCall(new InvokableCall(new Action(() =>
         {
-            sliderComp.value = GetNearestMultiple(sliderComp.value, configurationValue.StepAmount);
-            textComp.text = $"{configurationValue.Name} - {sliderComp.value}";
+            sliderComp.value = GetNearestMultiple(sliderComp.value, configuration.StepAmount);
+            textComp.text = $"{configuration.Name} - {sliderComp.value}";
             
-            configurationValue.OnValueChanged((int)sliderComp.value);
+            configuration.OnValueChanged((int)sliderComp.value);
+            configEntry.Value = (int)sliderComp.value;
         })));
 
+        sliderComp.onValueChanged.Invoke(configEntry.Value);
+        
         var handleObject = sliderObj.GetChild(2).GetChild(0);
         var tooltip = handleObject.GetComponent<UITooltip>();
-        tooltip.TooltipHeadingText = configurationValue.Name;
-        tooltip.TooltipText = configurationValue.Description;
+        tooltip.TooltipHeadingText = configuration.Name;
+        tooltip.TooltipText = configuration.Description;
     }
     
     private static float GetNearestMultiple(float number, float multiple)

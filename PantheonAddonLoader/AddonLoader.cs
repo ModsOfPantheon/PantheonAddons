@@ -1,4 +1,3 @@
-using Il2CppInterop.Runtime.Injection;
 using MelonLoader;
 using PantheonAddonFramework;
 using PantheonAddonLoader.AddonManagement;
@@ -24,6 +23,13 @@ public class AddonLoader : MelonMod
             Directory.CreateDirectory(AddonsFolderPath);
         }
         
+        // MelonLoader's OnApplicationQuit doesn't fire unless the game shuts down cleanly
+        // e.g., it does not fire if the console window is closed, so instead listen for ProcessExit to save
+        // when closed via the console window
+        AppDomain.CurrentDomain.ProcessExit += (s, e) => 
+        {
+            MelonPreferences.Save();
+        };
         LoadAddons();
     }
 

@@ -53,6 +53,26 @@ public class AddonWindow : IAddonWindow
         return new AddonTextComponent(textComponent);
     }
 
+    // TODO: Set this up from scratch instead of copying from an existing window
+    public IAddonWindow AddResizeHandle(int maxWidth, int maxHeight, int minWidth, int minHeight)
+    {
+        var mainChatWindow = UIChatWindows.Instance.mainWindow;
+        var resizeHandle = mainChatWindow.GetComponentInChildren<UIResizeHandle>();
+        
+        var resizeCopy = Object.Instantiate(resizeHandle, resizeHandle.transform.position, resizeHandle.transform.rotation, _rectTransform);
+        var copyHandle = resizeCopy.GetComponent<UIResizeHandle>();
+        copyHandle.ContainerRect = _rectTransform;
+        copyHandle.MaxSize = new Vector2(maxWidth, maxHeight);
+        copyHandle.MinSize = new Vector2(minWidth, minHeight);
+        
+        var copyRect = resizeCopy.GetComponent<RectTransform>();
+        copyRect.pivot = new Vector2(1, 0);
+        copyRect.sizeDelta = new Vector2(25, 25);
+        copyRect.anchoredPosition = new Vector2(-5, 4);
+        
+        return this;
+    }
+
     public void Enable(bool enabled)
     {
         _window.gameObject.SetActive(enabled);

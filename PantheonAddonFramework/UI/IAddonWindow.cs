@@ -11,6 +11,8 @@ public interface IAddonWindow
     void SetPosition(float newX, float newY);
 
     IAddonTextComponent AddTextComponent(string initialText);
+    IAddonWindow AddResizeHandle(int maxWidth, int maxHeight, int minWidth, int minHeight);
+    
     void Enable(bool enabled);
     void Destroy();
 }
