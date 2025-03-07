@@ -32,13 +32,10 @@ internal static class ScriptActivator
         instance.Name = scriptAttribute.Name;
         instance.Author = scriptAttribute.Author;
         instance.Description = scriptAttribute.Description;
-        instance.Enabled = true;
 
         instance.OnCreate();
         
         MelonLogger.Msg($"Loaded [{scriptAttribute.Author}] {scriptAttribute.Name}");
-        
-        instance.Enable();
         
         return instance;
     }
