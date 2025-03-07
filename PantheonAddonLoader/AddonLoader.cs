@@ -2,6 +2,7 @@ using MelonLoader;
 using PantheonAddonFramework;
 using PantheonAddonLoader.AddonManagement;
 using PantheonAddonLoader.Events;
+using UnityEngine;
 
 namespace PantheonAddonLoader;
 
@@ -38,6 +39,16 @@ public class AddonLoader : MelonMod
         LifecycleEvents.OnUpdate.Raise();
     }
 
+    public static void ReloadAddons()
+    {
+        foreach (var addon in LoadedAddons)
+        {
+            addon.Dispose();
+        }
+
+        LoadAddons();
+    }
+    
     private static void LoadAddons()
     {
         LoadedAddons.Clear();
