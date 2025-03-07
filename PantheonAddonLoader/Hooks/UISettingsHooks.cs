@@ -94,6 +94,8 @@ public class UISettingsHooks
             {
                 Object.Destroy(t.gameObject);
             }
+            
+            CustomUIComponents.Clear();
 
             CreateAddonConfigurationElements(instance, modTabPage);
         })));
