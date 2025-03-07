@@ -3,6 +3,8 @@
 # Pantheon Addons
 This project is an **experimental, third party, unofficial addon API** for Pantheon: Rise of the Fallen. Its primary purpose is to create addons in the game via a readonly API which alter or create user interface objects. It is designed to blend in with the overall design of the native user interface, enhancing the game without breaking immersion.
 
+As this project is in early development, expect breaking API changes, bugs etc.
+
 ## Installation
 Install MelonLoader, following along with their [installation instructions](https://melonwiki.xyz/#/?id=requirements)
 When selecting a version to install, tick `Enable Nightly builds` and install the latest nightly build (0.7.1-ci.2207 at time of writing)

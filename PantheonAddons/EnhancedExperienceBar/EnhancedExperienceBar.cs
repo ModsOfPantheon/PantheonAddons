@@ -9,7 +9,6 @@ namespace PantheonAddons.EnhancedExperienceBar;
 public sealed class EnhancedExperienceBar : Addon
 {
     private float _originalHeight;
-    private float _originalWidth;
     private IAddonWindow? _xpWindow;
     private IAddonTextComponent? _xpText;
 
@@ -23,14 +22,12 @@ public sealed class EnhancedExperienceBar : Addon
     public override void Enable()
     {
         _xpWindow?.SetHeight(_xpWindow.Height + 10);
-        _xpWindow?.SetWidth(_xpWindow.Width / 2);
         _xpText?.Enable(true);
     }
     
     public override void Disable()
     {
         _xpWindow?.SetHeight(_originalHeight);
-        _xpWindow?.SetWidth(_originalWidth);
         _xpText?.Enable(false);
     }
 
@@ -71,11 +68,9 @@ public sealed class EnhancedExperienceBar : Addon
     private void OnExperienceBarReady(IAddonWindow window)
     {
         _originalHeight = window.Height;
-        _originalWidth = window.Width;
         _xpWindow = window;
         
         _xpWindow.SetHeight(_originalHeight + 10);
-        _xpWindow.SetWidth(_originalWidth / 2);
 
         _xpText = _xpWindow.AddTextComponent("0 / 0");
         _xpText.SetSize(500, 20);

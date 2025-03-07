@@ -17,7 +17,6 @@ public abstract class Addon : IDisposable
     public ILifecycleEvents LifecycleEvents { get; set; }
     
     public string Name { get; set; }
-    public bool Enabled { get; set; }
     public string Author { get; set; }
     public string Description { get; set; }
 
