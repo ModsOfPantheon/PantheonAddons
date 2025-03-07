@@ -2,6 +2,7 @@ using MelonLoader;
 using PantheonAddonFramework;
 using PantheonAddonLoader.AddonManagement;
 using PantheonAddonLoader.Events;
+using PantheonAddonLoader.Security;
 
 namespace PantheonAddonLoader;
 
@@ -14,6 +15,7 @@ public class AddonLoader : MelonMod
     public static readonly LocalPlayerEvents LocalPlayerEvents = new();
     public static readonly PlayerEvents PlayerEvents = new();
     public static readonly LifecycleEvents LifecycleEvents = new();
+    public static readonly AddonScanning AddonScanning = new();
 
     public override void OnInitializeMelon()
     {
@@ -30,6 +32,7 @@ public class AddonLoader : MelonMod
         {
             MelonPreferences.Save();
         };
+        
         LoadAddons();
     }
 
@@ -46,6 +49,12 @@ public class AddonLoader : MelonMod
         
         foreach (var addonFile in Directory.GetFiles(AddonsFolderPath, "*.dll"))
         {
+            if (!AddonScanning.ShouldLoad(addonFile))
+            {
+                MelonLogger.Msg($"Skipping addon assembly {addonFile} as it failed security checks");
+                continue;
+            }
+            
             var assembly = System.Reflection.Assembly.LoadFile(addonFile);
             foreach (var type in assembly.GetTypes())
             {
