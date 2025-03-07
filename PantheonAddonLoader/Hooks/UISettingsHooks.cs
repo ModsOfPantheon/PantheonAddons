@@ -137,8 +137,6 @@ public class UISettingsHooks
             configuration.OnSelectionChanged(dropDown.value);
             entry.Value = dropDown.value;
         })));
-        
-        dropDown.onValueChanged.Invoke(dropDown.value);
     }
 
     private static void SetupCustomToggle(Addon addon, BoolConfigurationValue configuration, Transform parent, Transform buttonToCopy)
@@ -166,8 +164,6 @@ public class UISettingsHooks
             configuration.OnValueChanged(toggleComp.isOn);
             entry.Value = toggleComp.isOn;
         })));
-
-        toggleComp.onValueChanged.Invoke(toggleComp.isOn);
     }
 
     private static void SetupCustomSlider(Addon addon, FloatConfigurationValue configuration, Transform parent, Transform sliderToCopy)
@@ -200,8 +196,6 @@ public class UISettingsHooks
             
             entry.Value = MathF.Round(sliderComp.value, 1);
         })));
-        
-        sliderComp.onValueChanged.Invoke(MathF.Round(sliderComp.value, 1));
         
         var handleObject = sliderObj.GetChild(2).GetChild(0);
         var tooltip = handleObject.GetComponent<UITooltip>();
@@ -241,8 +235,6 @@ public class UISettingsHooks
             configEntry.Value = (int)sliderComp.value;
         })));
 
-        sliderComp.onValueChanged.Invoke(configEntry.Value);
-        
         var handleObject = sliderObj.GetChild(2).GetChild(0);
         var tooltip = handleObject.GetComponent<UITooltip>();
         tooltip.TooltipHeadingText = configuration.Name;
