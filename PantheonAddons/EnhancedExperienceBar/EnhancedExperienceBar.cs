@@ -9,7 +9,8 @@ namespace PantheonAddons.EnhancedExperienceBar;
 public sealed class EnhancedExperienceBar : Addon
 {
     private float _originalHeight;
-    private IAddonWindow? _xpWindow;
+    private bool _disableTicks;
+    private IXpBarWindow? _xpWindow;
     private IAddonTextComponent? _xpText;
 
     public override void OnCreate()
@@ -21,19 +22,30 @@ public sealed class EnhancedExperienceBar : Addon
 
     public override void Enable()
     {
+        _xpWindow?.ShowTicks(!_disableTicks);
         _xpWindow?.SetHeight(_xpWindow.Height + 10);
         _xpText?.Enable(true);
     }
     
     public override void Disable()
     {
+        _xpWindow?.ShowTicks(true);
         _xpWindow?.SetHeight(_originalHeight);
         _xpText?.Enable(false);
     }
 
     public override IEnumerable<IConfigurationValue> GetConfiguration()
     {
-        return Array.Empty<IConfigurationValue>();
+        return new[]
+        {
+            new BoolConfigurationValue("Disable ticks", "Whether or not to disable the ticks marking every 10% on the experience bar.", false, OnDisableTicksChanged)
+        };
+    }
+
+    private void OnDisableTicksChanged(bool b)
+    {
+        _disableTicks = b;
+        _xpWindow?.ShowTicks(!_disableTicks);
     }
 
     public override void Dispose()
@@ -65,7 +77,7 @@ public sealed class EnhancedExperienceBar : Addon
         _xpText?.SetText(CreateText(playerExperience));
     }
 
-    private void OnExperienceBarReady(IAddonWindow window)
+    private void OnExperienceBarReady(IXpBarWindow window)
     {
         _originalHeight = window.Height;
         _xpWindow = window;
@@ -74,6 +86,11 @@ public sealed class EnhancedExperienceBar : Addon
 
         _xpText = _xpWindow.AddTextComponent("0 / 0");
         _xpText.SetSize(500, 20);
+
+        if (_disableTicks)
+        {
+            _xpWindow.ShowTicks(false);
+        }
     }
     
     private static string CreateText(PlayerExperience playerExperience)
