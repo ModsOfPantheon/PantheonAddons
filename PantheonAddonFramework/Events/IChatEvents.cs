@@ -4,5 +4,5 @@ namespace PantheonAddonFramework.Events;
 
 public interface IChatEvents
 {
-    AddonEvent<ChatMessage> OnChatMessageReceived { get; }
+    AddonEvent<ChatMessage> OnMessageReceived { get; }
 }

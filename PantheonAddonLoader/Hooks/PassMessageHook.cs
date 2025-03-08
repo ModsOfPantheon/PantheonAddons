@@ -10,6 +10,6 @@ public class PassMessageHook
 {
     private static void Postfix(UIChatWindows __instance, string name, string message, ChatChannelType channel)
     {
-        AddonLoader.ChatEvents.OnChatMessageReceived.Raise(new ChatMessage(name, message, channel.ToString()));
+        AddonLoader.ChatEvents.OnMessageReceived.Raise(new ChatMessage(name, message, channel.ToString()));
     }
 }
