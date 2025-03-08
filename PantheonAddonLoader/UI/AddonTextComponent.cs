@@ -40,6 +40,6 @@ public class AddonTextComponent : IAddonTextComponent
 
     public void Destroy()
     {
-        Object.Destroy(Text);
+        Object.Destroy(Text.gameObject);
     }
 }

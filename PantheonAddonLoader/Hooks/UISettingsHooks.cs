@@ -4,6 +4,7 @@ using Il2CppTMPro;
 using MelonLoader;
 using PantheonAddonFramework;
 using PantheonAddonFramework.Configuration;
+using PantheonAddonLoader.AddonComponents;
 using PantheonAddonLoader.AddonManagement;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,34 +16,36 @@ namespace PantheonAddonLoader.Hooks;
 [HarmonyPatch(typeof(UISettings), nameof(UISettings.Awake))]
 public class UISettingsHooks
 {
+    private static List<GameObject> CustomUIComponents = new();
+    
     private static void Postfix(UISettings __instance)
     {
         // TODO: Move this out of the hook in to another evented class
         if (__instance.transform.childCount < 11)
         {
+            // This ran at character select
             return;
         }
 
-        var tabButtons = __instance.transform.GetChild(3);
+        var modTabPage = CreateAddonPage(__instance);
 
+        CreateReloadButton(__instance, modTabPage);
+        
+        CreateAddonConfigurationElements(__instance, modTabPage);
+    }
+
+    private static Transform CreateAddonPage(UISettings instance)
+    {
+        var tabButtons = instance.transform.GetChild(3);
         var otherButton = tabButtons.GetChild(5);
+        var otherTabPage = instance.transform.GetChild(9);
 
-        var tabGeneral = __instance.transform.GetChild(4);
-        var generalLayout = tabGeneral.GetChild(0);
-        var spacer = generalLayout.GetChild(0);
-        var sliderToCopy = generalLayout.GetChild(11);
-        var picklistToCopy = generalLayout.GetChild(4);
-        
-        var tabOther = __instance.transform.GetChild(9);
-        
-        var newButton = Object.Instantiate(otherButton, otherButton.position, otherButton.rotation, tabButtons);
-        newButton.name = "Addons";
-        var tabPageButton = newButton.GetComponent<UITabPageButton>();
+        var addonTabButton = Object.Instantiate(otherButton, otherButton.position, otherButton.rotation, tabButtons);
+        addonTabButton.name = "Addons";
+        var tabPageButton = addonTabButton.GetComponent<UITabPageButton>();
         tabPageButton.Text.text = "Addons";
         
-        var tabPageOther = __instance.transform.GetChild(9);
-        var modTabPage = Object.Instantiate(tabPageOther, tabPageOther.position, tabPageOther.rotation,
-            __instance.transform);
+        var modTabPage = Object.Instantiate(otherTabPage, otherTabPage.position, otherTabPage.rotation, instance.transform);
         modTabPage.name = "TabPage_Addons";
         
         var newTabPageLayout = modTabPage.GetChild(0);
@@ -56,11 +59,55 @@ public class UISettingsHooks
         uiTabPage.TabButton = tabPageButton;
         tabPageButton.TabPage = uiTabPage;
         
-        var parentRect = __instance.GetComponent<RectTransform>();
+        var parentRect = instance.GetComponent<RectTransform>();
         var parentSize = parentRect.sizeDelta;
         parentRect.sizeDelta =
-            new Vector2(parentSize.x + newButton.GetComponent<RectTransform>().sizeDelta.x, parentSize.y);
+            new Vector2(parentSize.x + addonTabButton.GetComponent<RectTransform>().sizeDelta.x, parentSize.y);
+        return modTabPage;
+    }
 
+    private static void CreateReloadButton(UISettings instance, Transform modTabPage)
+    {
+        var tabInput = instance.transform.GetChild(7);
+        var inputLayout = tabInput.GetChild(0);
+        var keybindButton = inputLayout.GetChild(2);
+        
+        var keybindCopy = Object.Instantiate(keybindButton, keybindButton.position, keybindButton.rotation,
+            modTabPage.GetChild(0));
+        
+        var keybindCopyText = keybindCopy.GetChild(0).GetComponent<TextMeshProUGUI>();
+        keybindCopyText.text = "Addons";
+
+        var keybindCopyButtonObject = keybindCopy.GetChild(1);
+        var keybindCopyButtonText = keybindCopyButtonObject.GetChild(0).GetComponent<TextMeshProUGUI>();
+        keybindCopyButtonText.text = "Reload";
+        var keybindCopyButton = keybindCopyButtonObject.GetComponent<Button>();
+        keybindCopyButton.onClick = new Button.ButtonClickedEvent();
+        keybindCopyButton.onClick.RemoveAllListeners();
+        keybindCopyButton.onClick.AddCall(new InvokableCall(new Action(() =>
+        {
+            AddonLoader.ReloadAddons();
+            
+            MelonLogger.Msg($"We have {CustomUIComponents.Count} items");
+            
+            foreach (var t in CustomUIComponents)
+            {
+                Object.Destroy(t.gameObject);
+            }
+            
+            CustomUIComponents.Clear();
+
+            CreateAddonConfigurationElements(instance, modTabPage);
+        })));
+    }
+
+    private static void CreateAddonConfigurationElements(UISettings instance, Transform modTabPage)
+    {
+        var tabGeneral = instance.transform.GetChild(4);
+        var generalLayout = tabGeneral.GetChild(0);
+        var spacer = generalLayout.GetChild(0);
+        var sliderToCopy = generalLayout.GetChild(11);
+        var picklistToCopy = generalLayout.GetChild(4);
         var buttonToCopy = generalLayout.GetChild(1);
         
         foreach (var addon in AddonLoader.LoadedAddons)
@@ -98,13 +145,14 @@ public class UISettingsHooks
                 }
             }
             
-            GameObject.Instantiate(spacer, spacer.transform.position, spacer.transform.rotation, modTabPage.GetChild(0));
+            var spacerCopy = Object.Instantiate(spacer, spacer.transform.position, spacer.transform.rotation, modTabPage.GetChild(0));
+            CustomUIComponents.Add(spacerCopy.gameObject);
         }
     }
 
     private static void SetupCustomPicklist(Addon addon, PicklistConfigurationValue configuration, Transform parent, Transform picklistToCopy)
     {
-        var copy = GameObject.Instantiate(picklistToCopy, picklistToCopy.position, picklistToCopy.rotation, parent);
+        var copy = Object.Instantiate(picklistToCopy, picklistToCopy.position, picklistToCopy.rotation, parent);
         copy.name = $"Toggle_{addon.Name}_{configuration.Name}";
         
         var tooltip = copy.GetOrAddComponent<UITooltip>();
@@ -127,7 +175,8 @@ public class UISettingsHooks
         }
 
         var category = MelonPreferences.GetCategory(addon.Name);
-        var entry = category.GetEntry<int>(configuration.Name);
+        var entry = category.GetEntry<int>(configuration.Name)
+                    ?? category.CreateEntry(configuration.Name, configuration.InitialIndex);
         
         dropDown.value = entry.Value;
         
@@ -137,11 +186,13 @@ public class UISettingsHooks
             configuration.OnSelectionChanged(dropDown.value);
             entry.Value = dropDown.value;
         })));
+        
+        CustomUIComponents.Add(copy.gameObject);
     }
 
     private static void SetupCustomToggle(Addon addon, BoolConfigurationValue configuration, Transform parent, Transform buttonToCopy)
     {
-        var copy = GameObject.Instantiate(buttonToCopy, buttonToCopy.position, buttonToCopy.rotation, parent);
+        var copy = Object.Instantiate(buttonToCopy, buttonToCopy.position, buttonToCopy.rotation, parent);
         copy.name = $"Toggle_{addon.Name}_{configuration.Name}";
 
         var tooltip = copy.GetOrAddComponent<UITooltip>();
@@ -155,7 +206,7 @@ public class UISettingsHooks
         var toggleComp = copy.GetComponent<Toggle>();
         
         var category = MelonPreferences.GetCategory(addon.Name);
-        var entry = category.GetEntry<bool>(configuration.Name);
+        var entry = category.GetEntry<bool>(configuration.Name) ?? category.CreateEntry(configuration.Name, configuration.InitialValue);
         
         toggleComp.isOn = entry.Value;
         toggleComp.onValueChanged.RemoveAllListeners();
@@ -164,11 +215,13 @@ public class UISettingsHooks
             configuration.OnValueChanged(toggleComp.isOn);
             entry.Value = toggleComp.isOn;
         })));
+        
+        CustomUIComponents.Add(copy.gameObject);
     }
 
     private static void SetupCustomSlider(Addon addon, FloatConfigurationValue configuration, Transform parent, Transform sliderToCopy)
     {
-        var copy = GameObject.Instantiate(sliderToCopy, sliderToCopy.position, Quaternion.identity, parent);
+        var copy = Object.Instantiate(sliderToCopy, sliderToCopy.position, Quaternion.identity, parent);
         copy.name = $"Slider_{addon.Name}_{configuration.Name}";
         
         Object.Destroy(copy.GetComponent<UISettings_ConfigSlider>());
@@ -183,7 +236,7 @@ public class UISettingsHooks
         sliderComp.wholeNumbers = false;
         
         var category = MelonPreferences.GetCategory(addon.Name);
-        var entry = category.GetEntry<float>(configuration.Name);
+        var entry = category.GetEntry<float>(configuration.Name) ?? category.CreateEntry(configuration.Name, configuration.InitialValue);
         sliderComp.value = entry.Value;
         textComp.text = $"{configuration.Name} - {sliderComp.value:F1}";
         
@@ -202,12 +255,14 @@ public class UISettingsHooks
         var tooltip = handleObject.GetComponent<UITooltip>();
         tooltip.TooltipHeadingText = configuration.Name;
         tooltip.TooltipText = configuration.Description;
+        
+        CustomUIComponents.Add(copy.gameObject);
     }
     
     // TODO: Clean up duplicate code between this method and one above
     private static void SetupCustomSlider(Addon addon, IntConfigurationValue configuration, Transform parent, Transform sliderToCopy)
     {
-        var copy = GameObject.Instantiate(sliderToCopy, sliderToCopy.position, Quaternion.identity, parent);
+        var copy = Object.Instantiate(sliderToCopy, sliderToCopy.position, Quaternion.identity, parent);
         copy.name = $"Slider_{addon.Name}_{configuration.Name}";
         
         Object.Destroy(copy.GetComponent<UISettings_ConfigSlider>());
@@ -222,7 +277,7 @@ public class UISettingsHooks
         sliderComp.wholeNumbers = true;
         
         var category = MelonPreferences.GetCategory(addon.Name);
-        var configEntry = category.GetEntry<int>(configuration.Name);
+        var configEntry = category.GetEntry<int>(configuration.Name) ?? category.CreateEntry(configuration.Name, configuration.InitialValue);
         
         sliderComp.value = configEntry.Value;
         textComp.text = $"{configuration.Name} - {sliderComp.value}";
@@ -241,6 +296,8 @@ public class UISettingsHooks
         var tooltip = handleObject.GetComponent<UITooltip>();
         tooltip.TooltipHeadingText = configuration.Name;
         tooltip.TooltipText = configuration.Description;
+        
+        CustomUIComponents.Add(copy.gameObject);
     }
     
     private static float GetNearestMultiple(float number, float multiple)

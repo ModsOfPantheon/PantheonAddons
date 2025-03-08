@@ -45,9 +45,9 @@ internal static class ScriptActivator
 
     private static void SetupConfiguration(Addon addon)
     {
-        var configSection = MelonPreferences.CreateCategory(addon.Name);
-        var enabled = configSection.CreateEntry(addon.Name, true);
-        if (enabled.Value)
+        var configSection = MelonPreferences.GetCategory(addon.Name) ?? MelonPreferences.CreateCategory(addon.Name);
+        var enabled = configSection.GetEntry<bool>(addon.Name)?.Value ?? true;
+        if (enabled)
         {
             addon.Enable();
         }
@@ -61,24 +61,24 @@ internal static class ScriptActivator
             switch (configuration)
             {
                 case FloatConfigurationValue floatConfigurationValue:
-                    var floatEntry = configSection.CreateEntry(floatConfigurationValue.Name,
-                        floatConfigurationValue.InitialValue);
-                    floatConfigurationValue.OnValueChanged(floatEntry.Value);
+                    var floatEntry = configSection.GetEntry<float>(floatConfigurationValue.Name)?.Value ?? configSection.CreateEntry(floatConfigurationValue.Name, floatConfigurationValue.InitialValue).Value;
+                    
+                    floatConfigurationValue.OnValueChanged(floatEntry);
                     break;
                 case IntConfigurationValue intConfigurationValue:
-                    var intEntry =
-                        configSection.CreateEntry(intConfigurationValue.Name, intConfigurationValue.InitialValue);
-                    intConfigurationValue.OnValueChanged(intEntry.Value);
+                    var intEntry = configSection.GetEntry<int>(intConfigurationValue.Name)?.Value ?? configSection.CreateEntry(intConfigurationValue.Name, intConfigurationValue.InitialValue).Value;
+                    
+                    intConfigurationValue.OnValueChanged(intEntry);
                     break;
                 case BoolConfigurationValue boolConfigurationValue:
-                    var boolEntry = configSection.CreateEntry(boolConfigurationValue.Name,
-                        boolConfigurationValue.InitialValue);
-                    boolConfigurationValue.OnValueChanged(boolEntry.Value);
+                    var boolEntry = configSection.GetEntry<bool>(boolConfigurationValue.Name)?.Value ?? configSection.CreateEntry(boolConfigurationValue.Name, boolConfigurationValue.InitialValue).Value;
+                    
+                    boolConfigurationValue.OnValueChanged(boolEntry);
                     break;
                 case PicklistConfigurationValue picklistConfigurationValue:
-                    var picklistEntry = configSection.CreateEntry(picklistConfigurationValue.Name,
-                        picklistConfigurationValue.InitialIndex);
-                    picklistConfigurationValue.OnSelectionChanged(picklistEntry.Value);
+                    var picklistEntry = configSection.GetEntry<int>(picklistConfigurationValue.Name)?.Value ?? configSection.CreateEntry(picklistConfigurationValue.Name, picklistConfigurationValue.InitialIndex).Value;
+                    
+                    picklistConfigurationValue.OnSelectionChanged(picklistEntry);
                     break;
             }
         }

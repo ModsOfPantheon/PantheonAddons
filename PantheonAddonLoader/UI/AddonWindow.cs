@@ -80,6 +80,6 @@ public class AddonWindow : IAddonWindow
 
     public void Destroy()
     {
-        Object.Destroy(_window);
+        Object.Destroy(_window.gameObject);
     }
 }

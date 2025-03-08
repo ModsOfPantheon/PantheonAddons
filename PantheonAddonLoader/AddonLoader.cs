@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Runtime.Loader;
 using MelonLoader;
 using PantheonAddonFramework;
 using PantheonAddonLoader.AddonManagement;
@@ -8,7 +10,10 @@ namespace PantheonAddonLoader;
 public class AddonLoader : MelonMod
 {
     public const string ModVersion = "1.0.0";
+    
     private static readonly string AddonsFolderPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\PantheonAddons";
+    private static AssemblyLoadContext? _assemblyLoadContext;
+    
     public static readonly List<Addon> LoadedAddons = new();
     public static readonly WindowPanelEvents WindowPanelEvents = new();
     public static readonly LocalPlayerEvents LocalPlayerEvents = new();
@@ -38,15 +43,33 @@ public class AddonLoader : MelonMod
         LifecycleEvents.OnUpdate.Raise();
     }
 
+    public static void ReloadAddons()
+    {
+        foreach (var addon in LoadedAddons)
+        {
+            addon.Dispose();
+        }
+
+        LoadAddons();
+    }
+    
     private static void LoadAddons()
     {
         LoadedAddons.Clear();
         
         MelonLogger.Msg($"Loading addons in {AddonsFolderPath}");
         
+        _assemblyLoadContext?.Unload();
+
+        _assemblyLoadContext = new AssemblyLoadContext("Addons", true);
+        
         foreach (var addonFile in Directory.GetFiles(AddonsFolderPath, "*.dll"))
         {
-            var assembly = System.Reflection.Assembly.LoadFile(addonFile);
+            // Read using a stream instead of LoadFromFile to prevent locking, and load to a separate assembly context
+            // so that we can unload it later, as MelonLoader doesn't like loading an assembly with the same name as
+            // an already loaded assembly
+            using var reader = File.OpenRead(addonFile);
+            var assembly = _assemblyLoadContext.LoadFromStream(reader);
             foreach (var type in assembly.GetTypes())
             {
                 if (!type.IsSubclassOf(typeof(Addon)))
