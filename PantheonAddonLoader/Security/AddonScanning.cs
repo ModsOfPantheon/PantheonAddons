@@ -1,4 +1,4 @@
-using System.Reflection;
+using Mono.Cecil;
 using PantheonAddonLoader.Security.Modules;
 
 namespace PantheonAddonLoader.Security;
@@ -7,14 +7,13 @@ public class AddonScanning : IAddonScanning
 {
     private readonly IAddonScanningModule[] _scanningModules =
     {
-        new SystemIOScanningModule()
+        new BlacklistedCallScanningModule()
     };
 
     public bool ShouldLoad(string addonFile)
     {
-        var safeContext = new SafeLoadContext();
-        var assembly = safeContext.LoadFromAssemblyPath(addonFile);
+        using var assemblyDefinition = AssemblyDefinition.ReadAssembly(addonFile);
 
-        return _scanningModules.All(module => module.PassesChecks(assembly, safeContext));
+        return _scanningModules.All(x => x.PassesChecks(assemblyDefinition));
     }
 }

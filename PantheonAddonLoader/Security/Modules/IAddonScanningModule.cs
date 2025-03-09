@@ -1,8 +1,9 @@
 using System.Reflection;
+using Mono.Cecil;
 
 namespace PantheonAddonLoader.Security.Modules;
 
 public interface IAddonScanningModule
 {
-    bool PassesChecks(Assembly assembly, SafeLoadContext safeLoadContext);
+    bool PassesChecks(AssemblyDefinition assemblyDefinition);
 }
