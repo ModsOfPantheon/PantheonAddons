@@ -7,13 +7,6 @@
     </PropertyGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="xcopy /Y &quot;$(TargetDir)\PantheonAddonFramework.dll&quot; &quot;Y:\Steam\common\Pantheon Rise of the Fallen\UserLibs&quot;" />
-    </Target>
-
-    <ItemGroup>
-      <Reference Include="Il2CppScripts">
-        <HintPath>Y:\Steam\steamapps\common\Pantheon Rise of the Fallen\MelonLoader\Il2CppAssemblies\Il2CppScripts.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-    
+        <Exec Command="xcopy /Y &quot;$(TargetDir)\PantheonAddonFramework.dll&quot; &quot;$(MSBuildProgramFiles32)\Steam\common\Pantheon Rise of the Fallen\UserLibs&quot;" />
+    </Target>    
 </Project>
