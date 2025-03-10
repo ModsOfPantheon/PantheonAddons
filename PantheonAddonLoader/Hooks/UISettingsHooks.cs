@@ -88,8 +88,6 @@ public class UISettingsHooks
         {
             AddonLoader.ReloadAddons();
             
-            MelonLogger.Msg($"We have {CustomUIComponents.Count} items");
-            
             foreach (var t in CustomUIComponents)
             {
                 Object.Destroy(t.gameObject);
