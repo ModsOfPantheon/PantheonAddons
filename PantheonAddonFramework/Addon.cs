@@ -9,6 +9,7 @@ public abstract class Addon : IDisposable
     public ILogger Logger { get; set; }
     public IKeyboard Keyboard { get; set; }
     public IMacros Macros { get; set; }
+    public IMacroLists MacroLists { get; set; }
     public ICustomUI CustomUI { get; set; }
     
     public IWindowPanelEvents WindowPanelEvents { get; set; }
