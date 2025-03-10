@@ -7,6 +7,8 @@ namespace PantheonAddonLoader.AddonComponents;
 
 public class Macros : IMacros
 {
+    private readonly List<IMacro> _macros = new List<IMacro>();
+
     public IMacro? GetByName(string name)
     {
         var macroBar = UIMacroBar.Instance;
@@ -28,28 +30,8 @@ public class Macros : IMacros
 
         return match is null ? null : new Macro(match);
     }
-}
-public class MacroLists : IMacroLists
-{
-    public IMacroList? GetAllMacros()
+    public IMacro[]? GetAllMacros()
     {
-        var macroBar = UIMacroBar.Instance;
-        if (macroBar is null)
-        {
-            return null;
-        }
-
-        var window = macroBar.windowPanel;
-        if (!window.IsVisible)
-        {
-            return null;
-        }
-
-        var buttonRoot = macroBar.ButtonRoot;
-
-        var macroButtons = buttonRoot.GetComponentsInChildren<UIMacroButton>();
-        //var match = macroButtons.FirstOrDefault(m => m.Name == name);
-
-        return (IMacroList?)macroButtons;
+        return _macros.Count > 0 ? _macros.ToArray() : null;
     }
 }

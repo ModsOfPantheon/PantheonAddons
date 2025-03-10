@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="xcopy /Y &quot;$(TargetDir)\PantheonAddonFramework.dll&quot; &quot;Y:\Steam\steamapps\common\Pantheon Rise of the Fallen\UserLibs&quot;" />
+        <Exec Command="xcopy /Y &quot;$(TargetDir)\PantheonAddonFramework.dll&quot; &quot;Z:\SteamLibrary\steamapps\common\Pantheon Rise of the Fallen\UserLibs&quot;" />
     </Target>
 
     <ItemGroup>
       <Reference Include="Il2CppScripts">
-        <HintPath>Y:\Steam\steamapps\common\Pantheon Rise of the Fallen\MelonLoader\Il2CppAssemblies\Il2CppScripts.dll</HintPath>
+        <HintPath>Z:\SteamLibrary\steamapps\common\Pantheon Rise of the Fallen\MelonLoader\Il2CppAssemblies\Il2CppScripts.dll</HintPath>
       </Reference>
     </ItemGroup>
     
