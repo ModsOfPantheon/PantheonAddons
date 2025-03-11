@@ -33,6 +33,16 @@ public class AddonTextComponent : IAddonTextComponent
         Text.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
+    public void SetFontSize(float fontSize)
+    {
+        Text.fontSize = fontSize;
+    }
+
+    public float GetFontSize()
+    {
+        return Text.fontSize;
+    }
+
     public void Enable(bool enabled)
     {
         Text.gameObject.SetActive(enabled);
