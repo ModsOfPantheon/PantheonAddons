@@ -43,6 +43,16 @@ public class AddonTextComponent : IAddonTextComponent
         return Text.fontSize;
     }
 
+    public void SetFontColor(byte red, byte green, byte blue, byte alpha)
+    {
+        Text.color = new Color32(red, green, blue, alpha);
+    }
+
+    public void SetFontColor(float red, float green, float blue, float alpha)
+    {
+        Text.color = new Color(red, green, blue, alpha);    
+    }
+
     public void Enable(bool enabled)
     {
         Text.gameObject.SetActive(enabled);
