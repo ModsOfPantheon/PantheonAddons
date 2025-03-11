@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -12,9 +12,7 @@
 
     <ItemGroup>
       <Reference Include="0Harmony">
-        <HintPath>
           <HintPath>$(MSBuildProgramFiles32)\Steam\steamapps\common\Pantheon Rise of the Fallen\MelonLoader\net6\0Harmony.dll</HintPath>
-        </HintPath>
       </Reference>
       <Reference Include="AsmResolver">
         <HintPath>$(MSBuildProgramFiles32)\Steam\steamapps\common\Pantheon Rise of the Fallen\MelonLoader\net6\AsmResolver.dll</HintPath>
