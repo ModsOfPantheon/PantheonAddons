@@ -13,7 +13,7 @@ public class UIPanelHooks
     {
         if (__instance.name == "Panel_XpBar")
         {
-            AddonLoader.WindowPanelEvents.OnExperienceBarReady.Raise(new AddonWindow(__instance));
+            AddonLoader.WindowPanelEvents.OnExperienceBarReady.Raise(new XpBarWindow(__instance));
         }
     }
 }

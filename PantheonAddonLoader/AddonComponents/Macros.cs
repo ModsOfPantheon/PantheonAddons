@@ -7,7 +7,6 @@ namespace PantheonAddonLoader.AddonComponents;
 
 public class Macros : IMacros
 {
-    private List<IMacro> _macros = new List<IMacro>();
 
     public IMacro? GetByName(string name)
     {
@@ -30,28 +29,24 @@ public class Macros : IMacros
 
         return match is null ? null : new Macro(match);
     }
-    public IMacro[]? GetAllMacros()
+    public IEnumerable<IMacro> GetAll()
     {
         var macroBar = UIMacroBar.Instance;
         if (macroBar is null)
         {
-            return null;
+            return Array.Empty<Macro>();
         }
 
         var window = macroBar.windowPanel;
         if (!window.IsVisible)
         {
-            return null;
+            return Array.Empty<Macro>();
         }
 
         var buttonRoot = macroBar.ButtonRoot;
 
         var macroButtons = buttonRoot.GetComponentsInChildren<UIMacroButton>();
 
-        foreach (var macro in macroButtons)
-        {
-            _macros.Add(GetByName(macro.Name));
-        }
-        return _macros.Count > 0 ? _macros.ToArray() : null;
+        return macroButtons.Select(macro => new Macro(macro));
     }
 }

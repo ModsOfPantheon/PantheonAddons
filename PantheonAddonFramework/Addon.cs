@@ -15,6 +15,7 @@ public abstract class Addon : IDisposable
     public ILocalPlayerEvents LocalPlayerEvents { get; set; }
     public IPlayerEvents PlayerEvents { get; set; }
     public ILifecycleEvents LifecycleEvents { get; set; }
+    public IChatEvents ChatEvents { get; set; }
     
     public string Name { get; set; }
     public string Author { get; set; }

@@ -19,6 +19,7 @@ public class AddonLoader : MelonMod
     public static readonly LocalPlayerEvents LocalPlayerEvents = new();
     public static readonly PlayerEvents PlayerEvents = new();
     public static readonly LifecycleEvents LifecycleEvents = new();
+    public static readonly ChatEvents ChatEvents = new();
 
     public override void OnInitializeMelon()
     {
