@@ -36,3 +36,7 @@ Desktop.ini
 .idea
 
 global.json
+
+# Ignore these so that people can set their game path locally without accidentally submitting to source control
+Directory.Build.props
+Directory.Build.targets
