@@ -1,0 +1,5 @@
+<Project>
+    <Target Name="CheckGamePath" BeforeTargets="BeforeBuild">
+        <Error Condition="!Exists('$(GamePath)')" Text="Error: The GamePath folder does not exist: $(GamePath). Please set the correct path in the Directory.Build.props file" />
+    </Target>
+</Project>

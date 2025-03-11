@@ -7,6 +7,6 @@
     </PropertyGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="xcopy /Y &quot;$(TargetDir)PantheonAddonFramework.dll&quot; &quot;$(MSBuildProgramFiles32)\Steam\steamapps\common\Pantheon Rise of the Fallen\UserLibs&quot;" />
+        <Exec Command="xcopy /Y &quot;$(TargetDir)PantheonAddonFramework.dll&quot; &quot;$(GamePath)\UserLibs&quot;" />
     </Target>
 </Project>
