@@ -16,7 +16,7 @@ public class Player : IPlayer
         _entityPlayerGameObject = entityPlayerGameObject;
         Stats = new EntityStats(_entityPlayerGameObject.Pools);
     }
-    public string CharacterID => _entityPlayerGameObject.Info.CharacterId.ToString();
+    public long CharacterID => _entityPlayerGameObject.Info.CharacterId;
     public string Name => _entityPlayerGameObject.info.DisplayName;
     public int Level => _entityPlayerGameObject.Experience.Level;
     public bool IsMale => _entityPlayerGameObject.info.Gender == Gender.Male;
