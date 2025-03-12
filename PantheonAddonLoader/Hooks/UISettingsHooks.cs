@@ -150,6 +150,11 @@ public class UISettingsHooks
 
     private static void SetupCustomPicklist(Addon addon, PicklistConfigurationValue configuration, Transform parent, Transform picklistToCopy)
     {
+        // If a blank string array is passed in, this breaks the loading of dropdown values.
+        // Gameobject is never added to the CustomUIComponents list and reload addons is broken. 
+        if (configuration.Values.Count() < 1)
+            return;
+        
         var copy = Object.Instantiate(picklistToCopy, picklistToCopy.position, picklistToCopy.rotation, parent);
         copy.name = $"Picklist_{addon.Name}_{configuration.Name}";
         
