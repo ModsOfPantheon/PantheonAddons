@@ -1,6 +1,7 @@
 using PantheonAddonFramework.AddonComponents;
 using PantheonAddonFramework.Configuration;
 using PantheonAddonFramework.Events;
+using PantheonAddonFramework.Models;
 
 namespace PantheonAddonFramework;
 
@@ -10,6 +11,7 @@ public abstract class Addon : IDisposable
     public IKeyboard Keyboard { get; set; }
     public IMacros Macros { get; set; }
     public ICustomUI CustomUI { get; set; }
+    public IPlayer Player { get; set; }
     
     public IWindowPanelEvents WindowPanelEvents { get; set; }
     public ILocalPlayerEvents LocalPlayerEvents { get; set; }
