@@ -1,6 +1,8 @@
 using Il2CppTMPro;
 using PantheonAddonFramework.UI;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
 namespace PantheonAddonLoader.UI;
@@ -8,10 +10,12 @@ namespace PantheonAddonLoader.UI;
 public class AddonTextComponent : IAddonTextComponent
 {
     private TextMeshProUGUI Text { get; }
+    private TMP_FontAsset FontAsset { get; set; }
 
     public AddonTextComponent(TextMeshProUGUI text)
     {
         Text = text;
+        FontAsset = text.font;
     }
 
     public string GetText()
@@ -51,6 +55,16 @@ public class AddonTextComponent : IAddonTextComponent
     public void SetFontColor(float red, float green, float blue, float alpha)
     {
         Text.color = new Color(red, green, blue, alpha);    
+    }
+
+    public void SetFont(string font)
+    {
+        string[] fontPaths = Font.GetPathsToOSFonts();
+        var index = Array.FindIndex(fontPaths, s => s.Contains(font, StringComparison.OrdinalIgnoreCase)); // Use 'Ordinal' if you want to use the Case Checking.
+        Font osFont = new Font(fontPaths[index]);
+        FontAsset = TMP_FontAsset.CreateFontAsset(osFont);
+        FontAsset.name = osFont.name;
+        Text.font = FontAsset;
     }
 
     public void Enable(bool enabled)

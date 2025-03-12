@@ -9,6 +9,7 @@ public interface IAddonTextComponent
     public float GetFontSize();
     void SetFontColor(byte red, byte green, byte blue, byte alpha);
     void SetFontColor(float red, float green, float blue, float alpha);
+    void SetFont(string font);
     void Enable(bool enabled);
     void Destroy();
 }
