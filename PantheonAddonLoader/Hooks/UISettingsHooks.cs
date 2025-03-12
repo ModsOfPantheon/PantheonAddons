@@ -151,7 +151,7 @@ public class UISettingsHooks
     private static void SetupCustomPicklist(Addon addon, PicklistConfigurationValue configuration, Transform parent, Transform picklistToCopy)
     {
         var copy = Object.Instantiate(picklistToCopy, picklistToCopy.position, picklistToCopy.rotation, parent);
-        copy.name = $"Toggle_{addon.Name}_{configuration.Name}";
+        copy.name = $"Picklist_{addon.Name}_{configuration.Name}";
         
         var tooltip = copy.GetOrAddComponent<UITooltip>();
         tooltip.TooltipHeadingText = configuration.Name;
