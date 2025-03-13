@@ -60,7 +60,7 @@ public class AddonTextComponent : IAddonTextComponent
     public void SetFont(string font)
     {
         string[] fontPaths = Font.GetPathsToOSFonts();
-        var index = Array.FindIndex(fontPaths, s => s.Contains(font, StringComparison.OrdinalIgnoreCase)); // Use 'Ordinal' if you want to use the Case Checking.
+        var index = Array.FindIndex(fontPaths, s => s.Contains(font, StringComparison.OrdinalIgnoreCase));
         Font osFont = new Font(fontPaths[index]);
         FontAsset = TMP_FontAsset.CreateFontAsset(osFont);
         FontAsset.name = osFont.name;

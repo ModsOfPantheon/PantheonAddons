@@ -9,6 +9,10 @@ public interface IAddonTextComponent
     public float GetFontSize();
     void SetFontColor(byte red, byte green, byte blue, byte alpha);
     void SetFontColor(float red, float green, float blue, float alpha);
+    /// <summary>
+    /// Set TextComponent font to provided font name, for example to use Impact.ttf, call function with "Impact"
+    /// </summary>
+    /// <param name="font">Filename for font without the .ttf extension</param>
     void SetFont(string font);
     void Enable(bool enabled);
     void Destroy();
