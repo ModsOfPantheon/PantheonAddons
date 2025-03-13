@@ -4,6 +4,8 @@ public interface IPlayer
 {
     IEntityStats Stats { get; }
 
+    long CharacterID { get; }
+
     string Name { get; }
 
     int Level { get; }
