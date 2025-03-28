@@ -13,6 +13,9 @@ public sealed class EnhancedExperienceBar : Addon
     private IXpBarWindow? _xpWindow;
     private IAddonTextComponent? _xpText;
 
+    private double _lastExp;
+    private double _lastNext;
+
     public override void OnCreate()
     {
         WindowPanelEvents.OnExperienceBarReady.Subscribe(OnExperienceBarReady);
@@ -75,12 +78,30 @@ public sealed class EnhancedExperienceBar : Addon
         {
             return;
         }
-        _xpText?.SetText(CreateText(experience));
+
+        _lastNext = experience.ToNextLevel;
+        _lastExp = experience.Current;
+
+        _xpText?.SetText(CreateText(experience, 0.0));
     }
 
     private void OnExperienceChanged(PlayerExperience playerExperience)
     {
-        _xpText?.SetText(CreateText(playerExperience));
+        double diff = 0.0;
+        if (playerExperience.ToNextLevel == _lastNext)
+        {
+          diff = playerExperience.Current - _lastExp;
+        } else {
+            // Each level, Current starts at 0
+
+            diff = _lastNext - _lastExp + playerExperience.Current;
+            _lastNext = playerExperience.ToNextLevel;
+            _lastExp = 0;
+        }
+
+        _lastExp = playerExperience.Current;
+
+        _xpText?.SetText(CreateText(playerExperience, diff));
     }
 
     private void OnExperienceBarReady(IXpBarWindow window)
@@ -99,8 +120,8 @@ public sealed class EnhancedExperienceBar : Addon
         }
     }
     
-    private static string CreateText(PlayerExperience playerExperience)
+    private static string CreateText(PlayerExperience playerExperience, double diff)
     {
-        return $"{playerExperience.Current:N0} / {playerExperience.ToNextLevel:N0} ({playerExperience.ExperiencePercentage * 100:F}%)";
+        return $"{playerExperience.Current:N0} / {playerExperience.ToNextLevel:N0} ({playerExperience.ExperiencePercentage * 100:F}% +{diff:N0})";
     }
 }
