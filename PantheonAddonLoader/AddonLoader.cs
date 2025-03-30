@@ -11,7 +11,7 @@ public class AddonLoader : MelonMod
 {
     public const string ModVersion = "1.0.0";
     
-    private static readonly string AddonsFolderPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\PantheonAddons";
+    private static readonly string AddonsFolderPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/PantheonAddons";
     private static AssemblyLoadContext? _assemblyLoadContext;
     
     public static readonly List<Addon> LoadedAddons = new();

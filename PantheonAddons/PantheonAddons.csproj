@@ -7,11 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PantheonAddonFramework\PantheonAddonFramework.csproj" />
+      <ProjectReference Include="../PantheonAddonFramework/PantheonAddonFramework.csproj" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <AppDataPath Condition="'$(OS)' == 'Windows_NT'">$(USERPROFILE)/AppData/Roaming/PantheonAddons</AppDataPath>
+        <AppDataPath Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.config/PantheonAddons</AppDataPath>
+    </PropertyGroup>
+    
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="xcopy /Y &quot;$(TargetDir)\PantheonAddons.dll&quot; &quot;%APPDATA%\PantheonAddons\&quot;" />
+        <ItemGroup>
+            <FilesToCopy Include="$(TargetDir)PantheonAddons.dll" />
+        </ItemGroup>
+        <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(AppDataPath)" />
     </Target>
 
 </Project>
