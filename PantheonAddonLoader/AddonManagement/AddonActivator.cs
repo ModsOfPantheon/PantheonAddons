@@ -90,6 +90,7 @@ internal static class ScriptActivator
         instance.Keyboard = new Keyboard();
         instance.Macros = new Macros();
         instance.CustomUI = new CustomUI();
+        instance.Chat = new Chat();
 
         instance.WindowPanelEvents = AddonLoader.WindowPanelEvents;
         instance.LocalPlayerEvents = AddonLoader.LocalPlayerEvents;
