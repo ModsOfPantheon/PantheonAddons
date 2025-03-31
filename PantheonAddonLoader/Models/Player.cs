@@ -8,7 +8,6 @@ namespace PantheonAddonLoader.Models;
 public class Player : IPlayer
 {
     private readonly EntityPlayerGameObject _entityPlayerGameObject;
-
     public IEntityStats Stats { get; }
     
     public Player(EntityPlayerGameObject entityPlayerGameObject)
@@ -16,7 +15,8 @@ public class Player : IPlayer
         _entityPlayerGameObject = entityPlayerGameObject;
         Stats = new EntityStats(_entityPlayerGameObject.Pools);
     }
-
+    
+    public long CharacterId => _entityPlayerGameObject.info.CharacterId;
     public string Name => _entityPlayerGameObject.info.DisplayName;
     public int Level => _entityPlayerGameObject.Experience.Level;
     public bool IsMale => _entityPlayerGameObject.info.Gender == Gender.Male;
