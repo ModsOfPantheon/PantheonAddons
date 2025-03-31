@@ -2,7 +2,7 @@ namespace PantheonAddonFramework.UI;
 
 public interface IAddonImageComponent
 {
-    void SetSprite(string filePath);
+    void SetSpriteFromFile(string filePath);
 
     void SetColour(byte r, byte g, byte b, byte a);
 

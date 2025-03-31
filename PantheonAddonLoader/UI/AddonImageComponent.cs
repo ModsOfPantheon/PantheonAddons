@@ -15,7 +15,7 @@ public class AddonImageComponent : IAddonImageComponent
         _image = image;
     }
 
-    public void SetSprite(string filePath)
+    public void SetSpriteFromFile(string filePath)
     {
         var texture = _customAssetManager.GetSprite(filePath);
         
