@@ -3,6 +3,10 @@ namespace PantheonAddonFramework.Models;
 public interface IPlayer
 {
     IEntityStats Stats { get; }
+    
+    ICurrency InventoryCurrency { get; }
+    
+    ICurrency BankCurrency { get; }
 
     long CharacterId { get; }
     
