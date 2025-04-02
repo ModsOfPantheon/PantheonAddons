@@ -5,6 +5,6 @@ namespace PantheonAddonLoader.Events;
 
 public class WindowPanelEvents : IWindowPanelEvents
 {
-    public AddonEvent<IXpBarWindow> OnExperienceBarReady { get; } = new();
-    public AddonEvent<IAddonWindow> OnWindowMoved { get; } = new();
+    public AddonEvent<IXpBarWindow> ExperienceBarReady { get; } = new();
+    public AddonEvent<IAddonWindow> WindowMoved { get; } = new();
 }

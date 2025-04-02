@@ -4,6 +4,6 @@ namespace PantheonAddonFramework.Events;
 
 public interface IPlayerEvents
 {
-    AddonEvent<IPlayer> OnPlayerAdded { get; }
-    AddonEvent<IPlayer> OnPlayerRemoved { get; }
+    AddonEvent<IPlayer> PlayerAdded { get; }
+    AddonEvent<IPlayer> PlayerRemoved { get; }
 }

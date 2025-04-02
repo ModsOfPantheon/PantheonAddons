@@ -63,22 +63,22 @@ internal static class ScriptActivator
                 case FloatConfigurationValue floatConfigurationValue:
                     var floatEntry = configSection.GetEntry<float>(floatConfigurationValue.Name)?.Value ?? configSection.CreateEntry(floatConfigurationValue.Name, floatConfigurationValue.InitialValue).Value;
                     
-                    floatConfigurationValue.OnValueChanged(floatEntry);
+                    floatConfigurationValue.ValueChanged(floatEntry);
                     break;
                 case IntConfigurationValue intConfigurationValue:
                     var intEntry = configSection.GetEntry<int>(intConfigurationValue.Name)?.Value ?? configSection.CreateEntry(intConfigurationValue.Name, intConfigurationValue.InitialValue).Value;
                     
-                    intConfigurationValue.OnValueChanged(intEntry);
+                    intConfigurationValue.ValueChanged(intEntry);
                     break;
                 case BoolConfigurationValue boolConfigurationValue:
                     var boolEntry = configSection.GetEntry<bool>(boolConfigurationValue.Name)?.Value ?? configSection.CreateEntry(boolConfigurationValue.Name, boolConfigurationValue.InitialValue).Value;
                     
-                    boolConfigurationValue.OnValueChanged(boolEntry);
+                    boolConfigurationValue.ValueChanged(boolEntry);
                     break;
                 case PicklistConfigurationValue picklistConfigurationValue:
                     var picklistEntry = configSection.GetEntry<int>(picklistConfigurationValue.Name)?.Value ?? configSection.CreateEntry(picklistConfigurationValue.Name, picklistConfigurationValue.InitialIndex).Value;
                     
-                    picklistConfigurationValue.OnSelectionChanged(picklistEntry);
+                    picklistConfigurationValue.SelectionChanged(picklistEntry);
                     break;
             }
         }

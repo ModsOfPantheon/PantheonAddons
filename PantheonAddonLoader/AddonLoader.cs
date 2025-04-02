@@ -21,6 +21,8 @@ public class AddonLoader : MelonMod
     public static readonly LifecycleEvents LifecycleEvents = new();
     public static readonly ChatEvents ChatEvents = new();
 
+    public static readonly ICustomAssetManager CustomAssetManager = new CustomAssetManager();
+    
     public override void OnInitializeMelon()
     {
         if (!Directory.Exists(AddonsFolderPath))

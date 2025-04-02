@@ -10,6 +10,7 @@ public interface IAddonWindow
     void SetWidth(float newWidth);
     void SetPosition(float newX, float newY);
 
+    IAddonImageComponent AddImageComponent(string objectName);
     IAddonTextComponent AddTextComponent(string initialText);
     IAddonWindow AddResizeHandle(int maxWidth, int maxHeight, int minWidth, int minHeight);
     

@@ -15,9 +15,9 @@ public sealed class EnhancedExperienceBar : Addon
 
     public override void OnCreate()
     {
-        WindowPanelEvents.OnExperienceBarReady.Subscribe(OnExperienceBarReady);
-        LocalPlayerEvents.OnExperienceChanged.Subscribe(OnExperienceChanged);
-        LocalPlayerEvents.OnLocalPlayerEntered.Subscribe(OnPlayerEntered);
+        WindowPanelEvents.ExperienceBarReady.Subscribe(OnExperienceBarReady);
+        LocalPlayerEvents.ExperienceChanged.Subscribe(OnExperienceChanged);
+        LocalPlayerEvents.LocalPlayerEntered.Subscribe(OnPlayerEntered);
     }
 
     public override void Enable()
@@ -56,8 +56,8 @@ public sealed class EnhancedExperienceBar : Addon
 
     public override void Dispose()
     {
-        WindowPanelEvents.OnExperienceBarReady.Unsubscribe(OnExperienceBarReady);
-        LocalPlayerEvents.OnExperienceChanged.Unsubscribe(OnExperienceChanged);
+        WindowPanelEvents.ExperienceBarReady.Unsubscribe(OnExperienceBarReady);
+        LocalPlayerEvents.ExperienceChanged.Unsubscribe(OnExperienceChanged);
         
         _xpText?.Destroy();
     }

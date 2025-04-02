@@ -2,6 +2,7 @@ using Il2Cpp;
 using Il2CppTMPro;
 using PantheonAddonFramework.UI;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace PantheonAddonLoader.UI;
@@ -36,7 +37,17 @@ public class AddonWindow : IAddonWindow
     {
         _rectTransform.transform.position = new Vector2(newX, newY);
     }
-    
+
+    public IAddonImageComponent AddImageComponent(string objectName)
+    {
+        var go = new GameObject("Test");
+        go.transform.SetParent(_window.transform);
+
+        var imageComponent = go.AddComponent<Image>();
+
+        return new AddonImageComponent(imageComponent, AddonLoader.CustomAssetManager);
+    }
+
     public IAddonTextComponent AddTextComponent(string initialText)
     {
         var go = new GameObject("Test");

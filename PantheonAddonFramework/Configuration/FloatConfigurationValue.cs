@@ -8,9 +8,9 @@ public class FloatConfigurationValue : IConfigurationValue
     public float MinValue { get; }
     public float MaxValue { get; }
     public float StepAmount { get; }
-    public Action<float> OnValueChanged { get; }    
+    public Action<float> ValueChanged { get; }    
     
-    public FloatConfigurationValue(string name, string description, float initialValue, float minValue, float maxValue, float stepAmount, Action<float> onValueChanged)
+    public FloatConfigurationValue(string name, string description, float initialValue, float minValue, float maxValue, float stepAmount, Action<float> valueChanged)
     {
         Name = name;
         Description = description;
@@ -18,6 +18,6 @@ public class FloatConfigurationValue : IConfigurationValue
         MinValue = minValue;
         MaxValue = maxValue;
         StepAmount = stepAmount;
-        OnValueChanged = onValueChanged;
+        ValueChanged = valueChanged;
     }
 }

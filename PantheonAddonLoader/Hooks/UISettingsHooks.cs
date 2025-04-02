@@ -186,7 +186,7 @@ public class UISettingsHooks
         dropDown.onValueChanged.RemoveAllListeners();
         dropDown.onValueChanged.AddCall(new InvokableCall(new Action(() =>
         {
-            configuration.OnSelectionChanged(dropDown.value);
+            configuration.SelectionChanged(dropDown.value);
             entry.Value = dropDown.value;
         })));
         
@@ -215,7 +215,7 @@ public class UISettingsHooks
         toggleComp.onValueChanged.RemoveAllListeners();
         toggleComp.onValueChanged.AddCall(new InvokableCall(new Action(() =>
         {
-            configuration.OnValueChanged(toggleComp.isOn);
+            configuration.ValueChanged(toggleComp.isOn);
             entry.Value = toggleComp.isOn;
         })));
         
@@ -249,7 +249,7 @@ public class UISettingsHooks
             sliderComp.value = GetNearestMultiple(sliderComp.value, configuration.StepAmount);
             textComp.text = $"{configuration.Name} - {sliderComp.value:F1}";
             
-            configuration.OnValueChanged(MathF.Round(sliderComp.value, 1));
+            configuration.ValueChanged(MathF.Round(sliderComp.value, 1));
             
             entry.Value = MathF.Round(sliderComp.value, 1);
         })));
@@ -291,7 +291,7 @@ public class UISettingsHooks
             sliderComp.value = GetNearestMultiple(sliderComp.value, configuration.StepAmount);
             textComp.text = $"{configuration.Name} - {sliderComp.value}";
             
-            configuration.OnValueChanged((int)sliderComp.value);
+            configuration.ValueChanged((int)sliderComp.value);
             configEntry.Value = (int)sliderComp.value;
         })));
 
