@@ -12,7 +12,7 @@ public sealed class SnapUIToGrid : Addon
     
     public override void OnCreate()
     {
-        WindowPanelEvents.OnWindowMoved.Subscribe(OnWindowMoved);
+        WindowPanelEvents.WindowMoved.Subscribe(OnWindowMoved);
     }
 
     private void OnWindowMoved(IAddonWindow window)
@@ -51,7 +51,7 @@ public sealed class SnapUIToGrid : Addon
 
     public override void Dispose()
     {
-        WindowPanelEvents.OnWindowMoved.Unsubscribe(OnWindowMoved);
+        WindowPanelEvents.WindowMoved.Unsubscribe(OnWindowMoved);
     }
     
     private static float GetNearestMultiple(float number, float multiple)

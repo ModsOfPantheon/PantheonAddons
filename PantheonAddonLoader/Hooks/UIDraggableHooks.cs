@@ -10,6 +10,6 @@ public class RectTransformHooks
 {
     private static void Postfix(UIDraggable __instance)
     {
-        AddonLoader.WindowPanelEvents.OnWindowMoved.Raise(new AddonWindow(__instance._windowPanel));
+        AddonLoader.WindowPanelEvents.WindowMoved.Raise(new AddonWindow(__instance._windowPanel));
     }
 }

@@ -8,9 +8,9 @@ public class IntConfigurationValue : IConfigurationValue
     public int MinValue { get; }
     public int MaxValue { get; }
     public int StepAmount { get; }
-    public Action<int> OnValueChanged { get; }
+    public Action<int> ValueChanged { get; }
 
-    public IntConfigurationValue(string name, string description, int initialValue, int minValue, int maxValue, int stepAmount, Action<int> onValueChanged)
+    public IntConfigurationValue(string name, string description, int initialValue, int minValue, int maxValue, int stepAmount, Action<int> valueChanged)
     {
         Name = name;
         Description = description;
@@ -18,6 +18,6 @@ public class IntConfigurationValue : IConfigurationValue
         MinValue = minValue;
         MaxValue = maxValue;
         StepAmount = stepAmount;
-        OnValueChanged = onValueChanged;
+        ValueChanged = valueChanged;
     }
 }

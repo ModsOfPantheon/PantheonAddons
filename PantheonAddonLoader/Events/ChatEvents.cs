@@ -5,5 +5,5 @@ namespace PantheonAddonLoader.Events;
 
 public class ChatEvents : IChatEvents
 {
-    public AddonEvent<ChatMessage> OnMessageReceived { get; } = new();
+    public AddonEvent<ChatMessage> MessageReceived { get; } = new();
 }

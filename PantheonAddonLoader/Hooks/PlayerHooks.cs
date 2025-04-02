@@ -22,10 +22,10 @@ public class PlayerNetworkStart
         if (player.IsLocalPlayer)
         {
             Globals.LocalPlayer = __instance;
-            AddonLoader.LocalPlayerEvents.OnLocalPlayerEntered.Raise(player);
+            AddonLoader.LocalPlayerEvents.LocalPlayerEntered.Raise(player);
         }
 
-        AddonLoader.PlayerEvents.OnPlayerAdded.Raise(player);
+        AddonLoader.PlayerEvents.PlayerAdded.Raise(player);
     }
 }
 
@@ -36,7 +36,7 @@ public class ExperienceSetHook
     {
         if (Globals.LocalPlayer?.Experience == __instance)
         {
-            AddonLoader.LocalPlayerEvents.OnExperienceChanged.Raise(new PlayerExperience(__instance.CalculateCurrentExperienceIntoLevel(), __instance.CalculateExperienceRequiredToNextLevel(), __instance.CalculatePercentThroughCurrentLevel()));
+            AddonLoader.LocalPlayerEvents.ExperienceChanged.Raise(new PlayerExperience(__instance.CalculateCurrentExperienceIntoLevel(), __instance.CalculateExperienceRequiredToNextLevel(), __instance.CalculatePercentThroughCurrentLevel()));
         }
     }
 }
