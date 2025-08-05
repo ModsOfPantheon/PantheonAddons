@@ -6,7 +6,7 @@ public class AddonEvent
     
     public void Subscribe(Action handler) => Event += handler;
     public void Unsubscribe(Action handler) => Event -= handler;
-    public void Raise() => Event();
+    internal void Raise() => Event();
 }
 
 public class AddonEvent<T>
@@ -15,5 +15,5 @@ public class AddonEvent<T>
 
     public void Subscribe(Action<T> handler) => Event += handler;
     public void Unsubscribe(Action<T> handler) => Event -= handler;
-    public void Raise(T arg) => Event(arg);
+    internal void Raise(T arg) => Event(arg);
 }
