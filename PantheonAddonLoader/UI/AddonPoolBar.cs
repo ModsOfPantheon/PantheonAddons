@@ -11,10 +11,18 @@ public class AddonPoolBar : IAddonPoolBar
     private UIPoolBar _poolbar;
     private RectTransform _rectTransform;
 
+    public IAddonRectTransform Bar { get; }
+    public IAddonRectTransform Panel { get; }
+    public IAddonRectTransform TargetNameText { get; }
+
     public AddonPoolBar(UIPoolBar poolbar)
     {
         _poolbar = poolbar;
-        _rectTransform = poolbar.GetComponent<RectTransform>();        
+        _rectTransform = poolbar.GetComponent<RectTransform>();
+
+        Bar = new AddonRectTransform(_poolbar.transform.GetChild(1).GetComponent<RectTransform>());
+        Panel = new AddonRectTransform(_rectTransform.parent.parent.parent.GetComponent<RectTransform>());
+        TargetNameText = new AddonRectTransform(_rectTransform.parent.parent.FindChild("Text_TargetName").GetComponent<RectTransform>());
     }
 
     public IAddonTextComponent AddTextComponent(string initialText)
@@ -42,20 +50,5 @@ public class AddonPoolBar : IAddonPoolBar
     public void Destroy()
     {
         Object.Destroy(_poolbar);
-    }
-
-    public void SetupWindow()
-    {
-        // This sets the bar position
-        var bar = _poolbar.transform.GetChild(1).GetComponent<RectTransform>();
-        bar.sizeDelta = new Vector2(0, 10);
-
-        // This sets the Panel_OffensiveTarget windows height
-        var panel = _rectTransform.parent.parent.parent.GetComponent<RectTransform>();
-        panel.sizeDelta = new Vector2(panel.sizeDelta.x, panel.sizeDelta.y + 5);
-
-        // This moves the Text_TargetName
-        var textTargetName = _rectTransform.parent.parent.FindChild("Text_TargetName").GetComponent<RectTransform>();
-        textTargetName.anchoredPosition = new Vector2(0, 20);
     }
 }
