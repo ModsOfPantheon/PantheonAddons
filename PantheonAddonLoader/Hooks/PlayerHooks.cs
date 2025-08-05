@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Il2Cpp;
+using Il2CppPantheonPersist;
 using PantheonAddonFramework.Models;
 using PantheonAddonLoader.AddonManagement;
 using PantheonAddonLoader.Models;
@@ -37,6 +38,46 @@ public class ExperienceSetHook
         if (Globals.LocalPlayer?.Experience == __instance)
         {
             AddonLoader.LocalPlayerEvents.ExperienceChanged.Raise(new PlayerExperience(__instance.CalculateCurrentExperienceIntoLevel(), __instance.CalculateExperienceRequiredToNextLevel(), __instance.CalculatePercentThroughCurrentLevel()));
+        }
+    }
+}
+
+[HarmonyPatch(typeof(Targets.Logic), nameof(Targets.Logic.SetOffensive))]
+public class TargetSetOffensiveHook
+{
+    private static void Postfix(Targets.Logic __instance)
+    {
+        if (Globals.LocalPlayer?.Targets == __instance)
+        {
+            float percent = 0;
+            if (__instance.Offensive != null)
+            {
+                var current = __instance.Offensive.Pools.GetCurrent(PoolType.Health);
+                var max = __instance.Offensive.Pools.GetMax(PoolType.Health);
+                percent = current / max * 100;
+            }              
+ 
+            AddonLoader.LocalPlayerEvents.OffensiveTargetChanged.Raise(percent);
+        }
+    }
+}
+
+[HarmonyPatch(typeof(Targets.Logic), nameof(Targets.Logic.SetDefensive))]
+public class TargetSetDefensiveHook
+{
+    private static void Postfix(Targets.Logic __instance)
+    {
+        if (Globals.LocalPlayer?.Targets == __instance)
+        {
+            float percent = 0;
+            if (__instance.Defensive != null)
+            {
+                var current = __instance.Defensive.Pools.GetCurrent(PoolType.Health);
+                var max = __instance.Defensive.Pools.GetMax(PoolType.Health);
+                percent = current / max * 100;
+            }
+
+            AddonLoader.LocalPlayerEvents.DefensiveTargetChanged.Raise(percent);
         }
     }
 }
