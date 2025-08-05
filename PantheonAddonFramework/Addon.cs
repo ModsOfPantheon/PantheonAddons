@@ -11,6 +11,7 @@ public abstract class Addon : IDisposable
     public IMacros Macros { get; set; }
     public ICustomUI CustomUI { get; set; }
     public IChat Chat { get; set; }
+    public ICustomAssetManager CustomAssetManager { get; set; }
     
     public IWindowPanelEvents WindowPanelEvents { get; set; }
     public ILocalPlayerEvents LocalPlayerEvents { get; set; }

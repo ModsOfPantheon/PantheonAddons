@@ -1,4 +1,6 @@
+using PantheonAddonFramework.AddonComponents;
 using PantheonAddonFramework.UI;
+using PantheonAddonLoader.AddonComponents;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,18 +8,23 @@ namespace PantheonAddonLoader.UI;
 
 public class AddonImageComponent : IAddonImageComponent
 {
-    private readonly ICustomAssetManager _customAssetManager;
+    private readonly CustomAssetManager _customAssetManager;
     private readonly Image _image;
 
-    public AddonImageComponent(Image image, ICustomAssetManager customAssetManager)
+    public AddonImageComponent(Image image, CustomAssetManager customAssetManager)
     {
         _customAssetManager = customAssetManager;
         _image = image;
     }
 
-    public void SetSpriteFromFile(string filePath)
+    public void SetCustomSprite(string filePath)
     {
         var texture = _customAssetManager.GetSprite(filePath);
+
+        if (texture == null)
+        {
+            return;
+        }
         
         _image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
     }

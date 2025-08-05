@@ -1,24 +1,29 @@
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using PantheonAddonFramework.AddonComponents;
 using UnityEngine;
 using UnityEngine.Bindings;
 
-namespace PantheonAddonLoader;
+namespace PantheonAddonLoader.AddonComponents;
 
 public class CustomAssetManager : ICustomAssetManager
 {
-    private Dictionary<string, Texture2D> _imageAssets = new();
+    private readonly Dictionary<string, Texture2D> _imageAssets = new();
+
+    public Texture2D? GetSprite(string key)
+    {
+        return _imageAssets.GetValueOrDefault(key);
+    }
     
-    public Texture2D GetSprite(string filePath)
+    public string LoadSprite(string filePath)
     {
         if (_imageAssets.TryGetValue(filePath, out var texture))
         {
-            return texture;
+            return filePath;
         }
 
         texture = LoadTextureFromFile(filePath);
         _imageAssets.Add(filePath, texture);
         
-        return texture;
+        return filePath;
     }
 
     private static Texture2D LoadTextureFromFile(string filePath)

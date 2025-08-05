@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Runtime.Loader;
 using MelonLoader;
 using PantheonAddonFramework;
+using PantheonAddonFramework.AddonComponents;
+using PantheonAddonLoader.AddonComponents;
 using PantheonAddonLoader.AddonManagement;
 using PantheonAddonLoader.Events;
 
@@ -21,7 +23,7 @@ public class AddonLoader : MelonMod
     public static readonly LifecycleEvents LifecycleEvents = new();
     public static readonly ChatEvents ChatEvents = new();
 
-    public static readonly ICustomAssetManager CustomAssetManager = new CustomAssetManager();
+    public static readonly CustomAssetManager CustomAssetManager = new();
     
     public override void OnInitializeMelon()
     {
