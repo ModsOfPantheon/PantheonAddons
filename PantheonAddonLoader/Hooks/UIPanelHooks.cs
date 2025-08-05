@@ -1,5 +1,7 @@
 using HarmonyLib;
 using Il2Cpp;
+using Il2CppPantheonPersist;
+using MelonLoader;
 using PantheonAddonFramework;
 using PantheonAddonLoader.AddonManagement;
 using PantheonAddonLoader.UI;
@@ -34,6 +36,13 @@ public class UIPoolBarHandlePoolChangedHook
 {
     private static void Postfix(UIPoolBar __instance, float current, float max, float delta, PoolChangeType changeType)
     {
+        // The below checks will throw for e.g., the player's Endurance pool bar. For now, lets only get the health pools
+        // until we've found a better way to do this
+        if (__instance.PoolType != PoolType.Health)
+        {
+            return;   
+        }
+        
         var pppName = __instance.transform.parent.parent.parent.name;
 
         if (pppName == "Panel_OffensiveTarget")
