@@ -1,3 +1,4 @@
+using Il2CppPantheonPersist;
 using PantheonAddonFramework.AddonComponents;
 
 namespace PantheonAddonLoader.AddonComponents;
@@ -19,7 +20,7 @@ public class CustomChatCommands : ICustomChatCommands
         }
     }
 
-    internal bool Handle(string message)
+    internal bool Handle(string message, ChatChannelType channel)
     {
         var split = message.Split(' ');
         
