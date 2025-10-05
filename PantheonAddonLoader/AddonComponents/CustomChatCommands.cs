@@ -20,7 +20,13 @@ public class CustomChatCommands : ICustomChatCommands
         }
     }
 
-    internal bool Handle(string message, ChatChannelType channel)
+    /// <summary>
+    /// Attempts to handle a 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="channel"></param>
+    /// <returns></returns>
+    internal bool Handle(string message)
     {
         var split = message.Split(' ');
         

@@ -9,7 +9,7 @@ public class SendChatMessageHook
 {
     private static bool Prefix(EntityClientMessaging.Logic __instance, string message, ChatChannelType channel)
     {
-        var response = AddonLoader.CustomChatCommands.Handle(message, channel);
+        var response = AddonLoader.CustomChatCommands.Handle(message);
         
         return !response;
     }
@@ -20,7 +20,7 @@ public class RequestWhisperHook
 {
     private static bool Prefix(EntityClientMessaging.Logic __instance, string targetPlayerName, string message)
     {
-        var response = AddonLoader.CustomChatCommands.Handle(message, ChatChannelType.SentWhisper);
+        var response = AddonLoader.CustomChatCommands.Handle(message);
         
         return !response;
     }
