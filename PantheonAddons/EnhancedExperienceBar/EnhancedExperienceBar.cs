@@ -75,6 +75,7 @@ public sealed class EnhancedExperienceBar : Addon
         {
             return;
         }
+        
         _xpText?.SetText(CreateText(experience));
     }
 

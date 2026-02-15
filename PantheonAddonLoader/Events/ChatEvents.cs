@@ -3,7 +3,7 @@ using PantheonAddonFramework.Models;
 
 namespace PantheonAddonLoader.Events;
 
-public class ChatEvents : IChatEvents
+public sealed class ChatEvents : IChatEvents
 {
     public AddonEvent<ChatMessage> MessageReceived { get; } = new();
 }

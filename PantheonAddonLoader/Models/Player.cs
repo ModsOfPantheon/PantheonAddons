@@ -1,6 +1,8 @@
 using Il2Cpp;
 using Il2CppPantheonPersist;
+using Il2CppViNL;
 using PantheonAddonFramework.Models;
+using PantheonAddonLoader.Hooks;
 
 namespace PantheonAddonLoader.Models;
 
@@ -10,13 +12,15 @@ public class Player : IPlayer
     public IEntityStats Stats { get; }
     public ICurrency InventoryCurrency { get; }
     public ICurrency BankCurrency { get; }
-
+    public IPlayerGroup PlayerGroup { get; }
+    
     public Player(EntityPlayerGameObject entityPlayerGameObject)
     {
         _entityPlayerGameObject = entityPlayerGameObject;
         Stats = new EntityStats(_entityPlayerGameObject.Pools);
         InventoryCurrency = new PlayerCurrency(_entityPlayerGameObject.Currency);
         BankCurrency = new BankCurrency(_entityPlayerGameObject.BankCurrency);
+        PlayerGroup = new PlayerGroup(_entityPlayerGameObject.Group);
     }
 
     public long CharacterId => _entityPlayerGameObject.info.CharacterId;
@@ -31,6 +35,6 @@ public class Player : IPlayer
         var experience = _entityPlayerGameObject.Experience;
         return new PlayerExperience(experience.CalculateCurrentExperienceIntoLevel(), experience.CalculateExperienceRequiredToNextLevel(), experience.CalculatePercentThroughCurrentLevel());
     }
-
+    
     public bool IsLocalPlayer => _entityPlayerGameObject.NetworkId.Value == EntityPlayerGameObject.LocalPlayerId.Value;
 }

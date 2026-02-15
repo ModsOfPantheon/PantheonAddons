@@ -3,7 +3,7 @@ using PantheonAddonFramework.Models;
 
 namespace PantheonAddonLoader.Events;
 
-public class LocalPlayerEvents : ILocalPlayerEvents
+public sealed class LocalPlayerEvents : ILocalPlayerEvents
 {
     public AddonEvent<IPlayer> LocalPlayerEntered { get; } = new();
     public AddonEvent<IPlayer> LocalPlayerLeft { get; } = new();
