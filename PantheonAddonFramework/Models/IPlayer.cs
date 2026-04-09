@@ -4,6 +4,8 @@ public interface IPlayer
 {
     IEntityStats Stats { get; }
     
+    IPlayerInventory Inventory { get; }
+    
     ICurrency InventoryCurrency { get; }
     
     ICurrency BankCurrency { get; }

@@ -8,6 +8,7 @@ public class Player : IPlayer
 {
     private readonly EntityPlayerGameObject _entityPlayerGameObject;
     public IEntityStats Stats { get; }
+    public IPlayerInventory Inventory { get; }
     public ICurrency InventoryCurrency { get; }
     public ICurrency BankCurrency { get; }
 
@@ -17,6 +18,7 @@ public class Player : IPlayer
         Stats = new EntityStats(_entityPlayerGameObject.Pools);
         InventoryCurrency = new PlayerCurrency(_entityPlayerGameObject.Currency);
         BankCurrency = new BankCurrency(_entityPlayerGameObject.BankCurrency);
+        Inventory = new PlayerInventory(_entityPlayerGameObject.Inventory);
     }
 
     public long CharacterId => _entityPlayerGameObject.info.CharacterId;
