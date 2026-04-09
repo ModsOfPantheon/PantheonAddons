@@ -1,3 +1,5 @@
+using PantheonAddonFramework.Events;
+
 namespace PantheonAddonFramework.Models;
 
 public interface IPlayerInventory

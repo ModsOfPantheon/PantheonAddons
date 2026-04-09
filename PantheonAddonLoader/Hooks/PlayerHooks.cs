@@ -3,6 +3,7 @@ using Il2Cpp;
 using Il2CppPantheonPersist;
 using PantheonAddonFramework.Models;
 using PantheonAddonLoader.AddonManagement;
+using PantheonAddonLoader.Events;
 using PantheonAddonLoader.Models;
 
 namespace PantheonAddonLoader.Hooks;
@@ -24,6 +25,8 @@ public class PlayerNetworkStart
         {
             Globals.LocalPlayer = __instance;
             AddonLoader.LocalPlayerEvents.LocalPlayerEntered.Raise(player);
+            __instance.Inventory.add_ItemAddedEvent(new Action<Item, InventoryWithPersyst.AddFlags>((i, _) => AddonLoader.LocalPlayerEvents.ItemAdded.Raise(new InventoryItem(i))));
+            __instance.Inventory.add_ItemDeletedEvent(new Action<Item, InventoryWithPersyst.DeleteFlags>((i, _) => AddonLoader.LocalPlayerEvents.ItemRemoved.Raise(new InventoryItem(i))));
         }
 
         AddonLoader.PlayerEvents.PlayerAdded.Raise(player);
