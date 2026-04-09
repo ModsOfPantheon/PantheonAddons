@@ -1,4 +1,3 @@
-using PantheonAddonFramework;
 using PantheonAddonFramework.Events;
 using PantheonAddonFramework.Models;
 
