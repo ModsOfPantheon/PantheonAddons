@@ -20,25 +20,25 @@ internal static class ScriptActivator
             return null;
         }
 
-        var scriptAttribute = addonType.GetCustomAttribute<AddonMetadataAttribute>(true);
+        var addonMetadataAttribute = addonType.GetCustomAttribute<AddonMetadataAttribute>(true);
 
-        if (scriptAttribute == null)
+        if (addonMetadataAttribute == null)
         {
-            MelonLogger.Error($"Failed to load {addonType.Name}, make sure it has a {nameof(scriptAttribute)}");
+            MelonLogger.Error($"Failed to load {addonType.Name}, make sure it has a {nameof(AddonMetadataAttribute)}");
             return null;
         }
 
         RegisterDependencies(instance);
 
-        instance.Name = scriptAttribute.Name;
-        instance.Author = scriptAttribute.Author;
-        instance.Description = scriptAttribute.Description;
+        instance.Name = addonMetadataAttribute.Name;
+        instance.Author = addonMetadataAttribute.Author;
+        instance.Description = addonMetadataAttribute.Description;
 
         instance.OnCreate();
 
         SetupConfiguration(instance);
 
-        MelonLogger.Msg($"Loaded [{scriptAttribute.Author}] {scriptAttribute.Name}");
+        MelonLogger.Msg($"Loaded [{addonMetadataAttribute.Author}] {addonMetadataAttribute.Name}");
 
         return instance;
     }
@@ -91,7 +91,9 @@ internal static class ScriptActivator
         instance.Macros = new Macros();
         instance.CustomUI = new CustomUI();
         instance.Chat = new Chat();
-
+        instance.Tooltips = new Tooltips();
+        instance.CustomAssetManager = AddonLoader.CustomAssetManager;
+        
         instance.WindowPanelEvents = AddonLoader.WindowPanelEvents;
         instance.LocalPlayerEvents = AddonLoader.LocalPlayerEvents;
         instance.PlayerEvents = AddonLoader.PlayerEvents;

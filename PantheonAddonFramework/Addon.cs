@@ -13,6 +13,7 @@ public abstract class Addon : IDisposable
     public IChat Chat { get; set; }
     public ICustomAssetManager CustomAssetManager { get; set; }
     public ICustomChatCommands CustomChatCommands { get; set; }
+    public ITooltips Tooltips { get; set; }
     
     public IWindowPanelEvents WindowPanelEvents { get; set; }
     public ILocalPlayerEvents LocalPlayerEvents { get; set; }
