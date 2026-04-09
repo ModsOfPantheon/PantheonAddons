@@ -1,6 +1,6 @@
 namespace PantheonAddonFramework.UI;
 
-public interface IAddonWindow
+public interface IAddonWindow : IAddonUIElement
 {
     float Height { get; }
     float Width { get; }
@@ -10,11 +10,9 @@ public interface IAddonWindow
     void SetWidth(float newWidth);
     void SetPosition(float newX, float newY);
 
-    IAddonImageComponent AddImageComponent(string objectName);
-    IAddonTextComponent AddTextComponent(string initialText);
     IAddonWindow AddResizeHandle(int maxWidth, int maxHeight, int minWidth, int minHeight);
     
     void Enable(bool enabled);
     void Destroy();
-    void AddVerticalLayout();
+    ILayoutObject AddVerticalLayout();
 }

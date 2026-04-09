@@ -24,7 +24,18 @@ public class CustomUI : ICustomUI
     private static UIWindowPanel SetupCustomWindow(string windowName, Transform midPanel, Vector2 initialSize)
     {
         var tutorialPopup = midPanel.GetComponentInChildren<UITutorialPopup>();
+
+        if (tutorialPopup == null)
+        {
+            MelonLogger.Msg("No tutorial window :(");
+        }
+        
         var buttonToCopy = tutorialPopup.transform.GetChild(0);
+        if (buttonToCopy == null)
+        {
+            MelonLogger.Msg("No button :(");
+        }
+        
         var imageToCopy = tutorialPopup.GetComponent<Image>();
         var gameObject = new GameObject(windowName);
         gameObject.transform.SetParent(midPanel);

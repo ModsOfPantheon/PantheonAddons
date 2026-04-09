@@ -1,6 +1,6 @@
 using PantheonAddonFramework;
 using PantheonAddonFramework.Configuration;
-using PantheonAddonFramework.Models;
+using PantheonAddonFramework.UI;
 
 namespace PantheonAddons.WindowTest;
 
@@ -9,16 +9,19 @@ public class WindowTest : Addon
 {
     public override void OnCreate()
     {
-        LocalPlayerEvents.LocalPlayerEntered.Subscribe(PlayerEntered);       
+        WindowPanelEvents.ExperienceBarReady.Subscribe(PlayerEntered);
     }
 
-    private void PlayerEntered(IPlayer obj)
+    private void PlayerEntered(IXpBarWindow xpBarWindow)
     {
         var window = CustomUI.CreateWindow("Test", 400, 500);
 
         window.AddResizeHandle(1000, 1000, 400, 500);
 
-        window.AddVerticalLayout();
+        var layout = window.AddVerticalLayout();
+
+        layout.AddTextComponent("Hello");
+        layout.AddTextComponent("World");
     }
 
     public override void Enable()

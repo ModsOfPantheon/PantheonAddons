@@ -40,28 +40,12 @@ public class AddonWindow : IAddonWindow
 
     public IAddonImageComponent AddImageComponent(string objectName)
     {
-        var go = new GameObject("Test");
-        go.transform.SetParent(_window.transform);
-
-        var imageComponent = go.AddComponent<Image>();
-
-        return new AddonImageComponent(imageComponent, AddonLoader.CustomAssetManager);
+        return ComponentFactory.CreateImageComponent(_rectTransform, AddonLoader.CustomAssetManager, objectName);
     }
 
     public IAddonTextComponent AddTextComponent(string initialText)
     {
-        var go = new GameObject("Test");
-        go.transform.SetParent(_window.transform);
-        
-        var textComponent = go.AddComponent<TextMeshProUGUI>();
-        textComponent.text = initialText;
-        textComponent.fontSize = 18;
-        textComponent.alignment = TextAlignmentOptions.Center;
-        
-        var rectTransform = go.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(0, 0);
-        
-        return new AddonTextComponent(textComponent);
+        return ComponentFactory.CreateTextComponent(_rectTransform, objectName: "Text", initialText);
     }
 
     // TODO: Set this up from scratch instead of copying from an existing window
@@ -94,10 +78,11 @@ public class AddonWindow : IAddonWindow
         Object.Destroy(_window.gameObject);
     }
 
-    public void AddVerticalLayout()
+    public ILayoutObject AddVerticalLayout()
     {
         var child = new GameObject("Layout");
         child.transform.SetParent(_rectTransform);
-        child.AddComponent<VerticalLayoutGroup>();
+        var layout = child.AddComponent<VerticalLayoutGroup>();
+        return new LayoutObject(layout);
     }
 }
