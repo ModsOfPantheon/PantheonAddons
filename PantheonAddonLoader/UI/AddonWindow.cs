@@ -93,4 +93,11 @@ public class AddonWindow : IAddonWindow
     {
         Object.Destroy(_window.gameObject);
     }
+
+    public void AddVerticalLayout()
+    {
+        var child = new GameObject("Layout");
+        child.transform.SetParent(_rectTransform);
+        child.AddComponent<VerticalLayoutGroup>();
+    }
 }

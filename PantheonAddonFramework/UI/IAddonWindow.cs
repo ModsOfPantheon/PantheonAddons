@@ -16,4 +16,5 @@ public interface IAddonWindow
     
     void Enable(bool enabled);
     void Destroy();
+    void AddVerticalLayout();
 }
