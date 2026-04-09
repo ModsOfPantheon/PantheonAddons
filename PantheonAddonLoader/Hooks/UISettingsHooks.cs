@@ -36,9 +36,9 @@ public class UISettingsHooks
 
     private static Transform CreateAddonPage(UISettings instance)
     {
-        var tabButtons = instance.transform.GetChild(3);
+        var tabButtons = instance.transform.FindChild("TabButtons");
         var otherButton = tabButtons.GetChild(5);
-        var otherTabPage = instance.transform.GetChild(9);
+        var otherTabPage = instance.transform.FindChild("TabPage_Other");
 
         var addonTabButton = Object.Instantiate(otherButton, otherButton.position, otherButton.rotation, tabButtons);
         addonTabButton.name = "Addons";
@@ -68,7 +68,7 @@ public class UISettingsHooks
 
     private static void CreateReloadButton(UISettings instance, Transform modTabPage)
     {
-        var tabInput = instance.transform.GetChild(7);
+        var tabInput = instance.transform.FindChild("TabPage_Input");
         var inputLayout = tabInput.GetChild(0);
         var keybindButton = inputLayout.GetChild(2);
         
@@ -101,7 +101,7 @@ public class UISettingsHooks
 
     private static void CreateAddonConfigurationElements(UISettings instance, Transform modTabPage)
     {
-        var tabGeneral = instance.transform.GetChild(4);
+        var tabGeneral = instance.transform.FindChild("TabPage_General");
         var generalLayout = tabGeneral.GetChild(0);
         var spacer = generalLayout.GetChild(0);
         var sliderToCopy = generalLayout.GetChild(11);
